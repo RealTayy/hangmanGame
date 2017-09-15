@@ -28,7 +28,8 @@ public class HangManApplication {
             System.out.println();
 
             // If player hasn't lost or won yet do this stuff...
-            while (!game.playerWonOrLost) {
+            boolean playerWonOrLost = false;
+            while (!playerWonOrLost) {
                 // Draw game area
                 game.drawGameArea();
                 // Player guesses
@@ -36,7 +37,7 @@ public class HangManApplication {
                 char letterGuessed = in.next().toLowerCase().charAt(0);
                 game.playerGuesses(letterGuessed);
                 // Checks to see if you have won or lost
-                game.isGameOver();
+                playerWonOrLost = game.isGameOver();
             }
 
             // See if player still wants to play

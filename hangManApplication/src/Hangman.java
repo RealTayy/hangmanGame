@@ -2,7 +2,8 @@ import java.util.*;
 
 public class Hangman {
 
-    boolean playerWonOrLost;
+    boolean playerWon;
+    boolean playerLost;
     int wordIndex;
     int wrongGuesses;
     String word;
@@ -13,7 +14,8 @@ public class Hangman {
     LinkedList<String[]> wordBank = new LinkedList<>();
 
     public Hangman() {
-        playerWonOrLost = false;
+        playerWon = false;
+        playerLost = false;
         wrongGuesses = 0;
         loadWords();
         loadRandomWord();
@@ -61,11 +63,12 @@ public class Hangman {
 
         StringBuilder wordSB = new StringBuilder();
 
-        for (int i = 0; i < word.length(); i++){
+        for (int i = 0; i < word.length(); i++) {
             if (hasLetterBeenGuessed(word.charAt(i))) wordSB.append(word.charAt(i) + " ");
             else wordSB.append("_ ");
         }
         System.out.println("    Word: " + wordSB.toString());
+        System.out.println("    Hint: " + wordHint);
     }
 
     public boolean hasLetterBeenGuessed(char c) {
@@ -174,11 +177,66 @@ public class Hangman {
     }
 
     public void playerGuesses(char c) {
+        Scanner in = new Scanner(System.in);
+        boolean charAlreadyGuessed = hasLetterBeenGuessed(c);
 
+        // Keep redrawing and asking for another letter if letter has been guessed before.
+        while (charAlreadyGuessed) {
+            drawGameArea();
+            System.out.println("The letter " + c + " has already been guessed. Try a different letter");
+            c = in.next().toLowerCase().charAt(0);
+            charAlreadyGuessed = hasLetterBeenGuessed(c);
+        }
+
+        // Add letter guessed to array whether its in word or not
+        lettersGuessed.add(c);
+
+        if (isCharInWord(c)) {
+            System.out.println("_________________________________________________");
+            System.out.println("Nice! The letter " + c + " is in the word!");
+        } else {
+            System.out.println("Uh oh! the letter " + c + " is not in the word...");
+            wrongGuesses++;
+        }
     }
 
-    public void isGameOver() {
+    public boolean isCharInWord(char c) {
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) == c) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean isGameOver() {
+        if (wrongGuesses == 6) {
+            // Player loses
+            System.out.println("OH NO! You lost! This must be the saddest day of your");
+            System.out.println("The word you were looking for is " + word + "!");
+            System.out.println("Better luck next time...");
+            System.out.println();
+            return true;
+        }
+        if (hasPlayerWon()) {
+            //Player wins!
+            playerWon = true;
+            System.out.println("Congrats! You've saved the innocent and guessed the word correctly!");
+            System.out.println("The word you were looking for is " + word + "!");
+            System.out.println("Next time won't be so easy...!");
+            System.out.println();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasPlayerWon() {
+        for (int i = 0; i < word.length(); i++) {
+            if (!hasLetterBeenGuessed(word.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
