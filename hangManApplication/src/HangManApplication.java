@@ -14,7 +14,7 @@ public class HangManApplication {
                 + " >You will guess a letter and if that letter is in the word it will be revealed!\n"
                 + " >If the letter isn't in the word. Our friend will get one step closer to death...\n"
                 + " >Guess all the letters correctly and you win! And our innocent friend is free!\n"
-                + " >Guess enough letters word... and say goodbye to our guy :<\n"
+                + " >Guess enough letters wrong... and say goodbye to our guy :<\n"
                 + "\n"
                 + "You ready for this kind of responsibility? Let's start! GOOD LUCK! You'll need it\n"
         );
